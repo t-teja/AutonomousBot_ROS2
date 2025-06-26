@@ -1,0 +1,86 @@
+# ROS2 Build Artifacts
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git
+.mypy_cache
+.pytest_cache
+.hypothesis
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Sensitive Data
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+config/secrets/
+secrets/
+credentials/
+*.env
+.env.*
+
+# Temporary Files
+*.tmp
+*.temp
+*.bak
+*.backup
+*~
+
+# Documentation Build
+docs/_build/
+docs/build/
+
+# Test Results
+test_results/
+*.xml
+
+# Camera Calibration Data (may contain sensitive info)
+calibration_data/
+camera_info/
+
+# Network Configuration (may contain sensitive info)
+network_config/
+wifi_config/
+
+# Personal Notes
+notes/
+TODO.txt
+NOTES.txt

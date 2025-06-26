@@ -1,0 +1,18 @@
+# OLED Display Configuration Parameters
+# Configuration for 128x32 SSD1306 OLED display on Jetson Orin Nano
+#
+# I2C Bus 7 Notes:
+# - Connected to GPIO header pins 3 (SDA) and 5 (SCL)
+# - Safe for external devices (not used by internal systems)
+# - Other devices on this bus: 0x40, 0x41 (existing hardware)
+# - AVOID I2C Bus 5 (31b0000.i2c) - used for CSI camera interface
+
+oled_display_node:
+  ros__parameters:
+    # I2C Configuration
+    i2c_bus: 7                    # I2C bus number (GPIO header pins 3,5)
+    i2c_address: 0x3C             # I2C address of OLED display
+
+    # Display Update Settings
+    update_rate: 5.0              # Display refresh rate in Hz
+    ip_refresh_interval: 30.0     # How often to check for IP changes (seconds)
