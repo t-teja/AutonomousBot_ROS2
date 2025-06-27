@@ -84,3 +84,6 @@ wifi_config/
 notes/
 TODO.txt
 NOTES.txt
+
+# Context Aware File for Augment Agents
+augment_context_aware.md

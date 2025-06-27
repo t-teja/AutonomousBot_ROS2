@@ -29,6 +29,12 @@ OLED display interface for showing IP address and system information.
 - **Features**: IP display, custom messages via ROS2 topics
 - **Status**: ✅ Complete and tested
 
+### motor_control_pkg
+Motor and servo control interface for Waveshare JetRacer with RP2040 secondary controller.
+- **Communication**: Serial JSON protocol over USB
+- **Features**: Differential drive, Ackerman steering, odometry, cmd_vel interface
+- **Status**: ✅ Complete and tested (simulation mode)
+
 ## I2C Bus Configuration Notes
 
 **IMPORTANT**: Jetson Orin Nano I2C bus usage:
@@ -42,20 +48,27 @@ OLED display interface for showing IP address and system information.
 ```bash
 cd Autonomous_robot
 colcon build
-source install/setup.bash
-```
+source install/setup.bash```
 
 2. **Launch OLED display**:
 ```bash
 ros2 launch oled_display_pkg oled_with_params.launch.py
 ```
 
+3. **Launch motor control (simulation)**:
+```bash
+ros2 run motor_control_pkg motor_control_node --ros-args -p simulation_mode:=true
+```
+
+4. **Test motor commands**:
+```bash
+ros2 topic pub /cmd_vel geometry_msgs/Twist '{linear: {x: 0.3}, angular: {z: 0.5}}'
+```
+
 ## Development Guidelines
 
 - All packages go in `src/` folder
-- Keep code clean and well-documented
-- Use "Teja" as maintainer name
-- No sensitive data in public repository
+
 - Test thoroughly before committing
 
 ## Maintainer

@@ -1,0 +1,15 @@
+# Set motor PID parameters service
+string motor_name        # Motor to configure ("left_motor", "right_motor", "both")
+float64 kp              # Proportional gain
+float64 ki              # Integral gain  
+float64 kd              # Derivative gain
+float64 max_output      # Maximum PID output
+float64 min_output      # Minimum PID output
+bool save_to_eeprom     # Save parameters to non-volatile memory
+---
+# Response
+bool success            # Configuration successful
+string message          # Status message
+float64 actual_kp       # Actual Kp value set
+float64 actual_ki       # Actual Ki value set
+float64 actual_kd       # Actual Kd value set
