@@ -85,5 +85,8 @@ notes/
 TODO.txt
 NOTES.txt
 
-# Context Aware File for Augment Agents
+# Context Aware File for Augment Agents (contains development notes)
 augment_context_aware.md
+
+# Hardware-specific files that may contain sensitive info
+*.uf2

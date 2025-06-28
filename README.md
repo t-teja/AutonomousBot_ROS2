@@ -23,17 +23,35 @@ This is the main ROS2 workspace for an autonomous robot project using Jetson Ori
 
 ## Packages
 
+### motor_control_pkg
+Motor and servo control interface for Waveshare JetRacer with RP2040 secondary controller.
+- **Communication**: Binary protocol over USB (/dev/ttyACM0)
+- **Features**: Differential drive, Ackerman steering, odometry, cmd_vel interface
+- **Status**: ✅ Complete and tested
+
 ### oled_display_pkg
 OLED display interface for showing IP address and system information.
 - **I2C Bus**: 7 (GPIO pins 3,5)
 - **Features**: IP display, custom messages via ROS2 topics
 - **Status**: ✅ Complete and tested
 
-### motor_control_pkg
-Motor and servo control interface for Waveshare JetRacer with RP2040 secondary controller.
-- **Communication**: Serial JSON protocol over USB
-- **Features**: Differential drive, Ackerman steering, odometry, cmd_vel interface
-- **Status**: ✅ Complete and tested (simulation mode)
+### battery_monitor_pkg
+INA219 battery monitoring system for power management.
+- **I2C Bus**: 7, Address: 0x41
+- **Features**: Voltage, current, power, percentage monitoring with warnings
+- **Status**: ✅ Complete and tested
+
+### rplidar_ros
+RPLidar A1 laser scanner integration for SLAM and navigation.
+- **Hardware**: RPLidar A1M8 via Waveshare JetRacer board (/dev/ttyACM1)
+- **Features**: Real-time laser scan data, RViz visualization
+- **Status**: ✅ Complete and tested
+
+### jetracer_msgs
+Custom ROS2 message definitions for JetRacer communication.
+- **Messages**: BatteryState, MotorCommand, MotorState, ServoCommand, etc.
+- **Services**: Calibration and PID tuning services
+- **Status**: ✅ Complete and working
 
 ## I2C Bus Configuration Notes
 
@@ -48,22 +66,50 @@ Motor and servo control interface for Waveshare JetRacer with RP2040 secondary c
 ```bash
 cd Autonomous_robot
 colcon build
-source install/setup.bash```
-
-2. **Launch OLED display**:
-```bash
-ros2 launch oled_display_pkg oled_with_params.launch.py
+source install/setup.bash
 ```
 
-3. **Launch motor control (simulation)**:
+2. **Launch Motor Control**:
 ```bash
-ros2 run motor_control_pkg motor_control_node --ros-args -p simulation_mode:=true
+ros2 launch motor_control_pkg motor_control.launch.py
 ```
 
-4. **Test motor commands**:
+3. **Launch OLED Display**:
 ```bash
+ros2 launch oled_display_pkg oled_display.launch.py
+```
+
+4. **Launch Battery Monitor**:
+```bash
+ros2 launch battery_monitor_pkg battery_monitor.launch.py
+```
+
+5. **Launch RPLidar with RViz**:
+```bash
+ros2 launch rplidar_ros view_rplidar_a1_launch.py serial_port:=/dev/ttyACM1
+```
+
+6. **Test Commands**:
+```bash
+# Test robot movement
 ros2 topic pub /cmd_vel geometry_msgs/Twist '{linear: {x: 0.3}, angular: {z: 0.5}}'
+
+# Test OLED display
+ros2 topic pub /oled_display_message std_msgs/String '{data: "Hello Robot!"}'
+
+# Monitor battery
+ros2 topic echo /battery/percentage
+
+# Monitor lidar
+ros2 topic hz /scan
 ```
+
+## RViz Configuration Notes
+
+**Important**: When launching RViz manually for lidar visualization:
+- Change Fixed Frame from 'map' to 'laser' (manual typing required)
+- Add LaserScan display with topic '/scan'
+- Or use the pre-configured launch: `view_rplidar_a1_launch.py`
 
 ## Development Guidelines
 
