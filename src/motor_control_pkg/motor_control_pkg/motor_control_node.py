@@ -105,11 +105,11 @@ class MotorControlNode(Node):
             success = self.rp2040.send_velocity_command(linear_x, linear_y, angular_z)
 
             if success:
-                self.get_logger().debug(
-                    f"Sent cmd_vel: linear={linear_x:.2f} m/s, steering={angular_z:.2f} rad"
+                self.get_logger().info(
+                    f"✅ Sent cmd_vel: linear={linear_x:.2f} m/s, steering={angular_z:.2f} rad"
                 )
             else:
-                self.get_logger().warn("Failed to send velocity command to RP2040")
+                self.get_logger().warn("❌ Failed to send velocity command to RP2040")
 
         except Exception as e:
             self.get_logger().error(f"Error processing cmd_vel: {e}")

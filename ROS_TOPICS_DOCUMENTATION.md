@@ -84,6 +84,55 @@ This document provides a comprehensive overview of all ROS2 nodes, topics, servi
 
 ---
 
+### 5. web_server_node (web_interface_pkg)
+**Purpose**: HTTP server for modern web interface
+**Executable**: `web_server_node.py`
+**Status**: ✅ COMPLETE AND READY
+
+#### Features:
+- Modern responsive web interface optimized for mobile/tablet
+- Real-time robot control with touch-friendly joystick
+- Battery monitoring dashboard
+- Lidar scan visualization
+- System status monitoring
+- Progressive Web App (PWA) support
+
+#### HTTP Endpoints:
+- `/` - Main robot control interface
+- `/api/robot_info` - Robot information API
+- `/api/system_status` - System status API
+
+---
+
+### 6. ros_bridge_node (web_interface_pkg)
+**Purpose**: WebSocket bridge between ROS2 and web interface
+**Executable**: `ros_bridge_node.py`
+**Status**: ✅ COMPLETE AND READY
+
+#### Subscribed Topics:
+- `/battery_state` (sensor_msgs/BatteryState) - Battery monitoring
+- `/jetracer/battery_state` (jetracer_msgs/BatteryState) - Custom battery data
+- `/battery/voltage` (std_msgs/Float32) - Battery voltage
+- `/battery/percentage` (std_msgs/Float32) - Battery percentage
+- `/robot_status` (std_msgs/String) - Robot status
+- `/robot_ip_address` (std_msgs/String) - Robot IP
+- `/scan` (sensor_msgs/LaserScan) - Lidar scan data
+- `/lidar/health_status` (std_msgs/Bool) - Lidar health
+- `/odom` (nav_msgs/Odometry) - Robot odometry
+
+#### Published Topics:
+- `/cmd_vel` (geometry_msgs/Twist) - Robot movement commands
+- `/oled_display_message` (std_msgs/String) - OLED display messages
+
+#### WebSocket Features:
+- Real-time data streaming at 10Hz
+- Bidirectional communication
+- Robot control commands
+- Lidar/battery data visualization
+- System monitoring
+
+---
+
 ## 📨 Custom Message Types (jetracer_msgs)
 
 ### Messages (.msg)
@@ -388,7 +437,23 @@ ros2 topic echo /scan --once
 ros2 topic hz /scan
 ```
 
-### 5. Manual RViz Setup (if needed)
+### 5. Web Interface System
+```bash
+cd /home/orin/Documents/jetros/Autonomous_robot
+source install/setup.bash
+
+# Launch complete web interface (HTTP + WebSocket servers)
+ros2 launch web_interface_pkg web_interface.launch.py
+
+# Custom ports (optional)
+ros2 launch web_interface_pkg web_interface.launch.py web_port:=8080 websocket_port:=8765
+
+# Access web interface
+# Local: http://localhost:8080
+# Network: http://<robot-ip>:8080
+```
+
+### 6. Manual RViz Setup (if needed)
 ```bash
 # Terminal 1: Launch RPLidar
 ros2 launch rplidar_ros rplidar_a1_launch.py serial_port:=/dev/ttyACM1
@@ -455,6 +520,19 @@ ros2 launch rplidar_ros --show-args view_rplidar_a1_launch.py
 - **Solution**: Change Fixed Frame from 'map' to 'laser' (manual typing required)
 - **Why**: RPLidar publishes in 'laser' frame, RViz needs matching reference frame
 - **Best Practice**: Use `view_rplidar_a1_launch.py` for pre-configured setup
+
+---
+
+## 📝 Recent Updates
+
+- **2025-06-29**: ✅ **CRITICAL FIX**: Resolved JSON parse errors in web interface caused by NaN values from battery monitor
+- **2025-06-29**: ✅ Added data cleaning function in ROS bridge to handle NaN/Inf values before JSON serialization
+- **2025-06-29**: ✅ Lidar data now flows correctly to web interface with real-time visualization
+- **2025-06-29**: ✅ Enhanced debugging with Lidar Data Log Window for troubleshooting
+- **2025-06-29**: ✅ Created comprehensive lidar troubleshooting guide (`LIDAR_TROUBLESHOOTING_GUIDE.md`)
+- **2025-06-28**: Added comprehensive launch file for complete system integration
+- **2025-06-28**: Integrated RPLidar A1 with web interface for real-time visualization
+- **2025-06-28**: Enhanced web interface with lidar scan display and controls
 
 ---
 

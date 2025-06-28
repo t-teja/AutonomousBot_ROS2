@@ -2,6 +2,29 @@
 
 **🎯 CRITICAL SUCCESS INFORMATION: This document contains the EXACT working solution for JetRacer RP2040 motor control.**
 
+## ⚠️ CRITICAL WEB INTERFACE ISSUE RESOLUTION
+
+### JSON Parse Error with Lidar Data (RESOLVED)
+
+**Issue**: Web interface showing "Waiting for lidar data..." with JSON parse errors: `Unexpected token 'N', ...""charge": NaN, "perc"... is not valid JSON`
+
+**Root Cause**: INA219 battery monitor occasionally sends `NaN` (Not a Number) values for charge/percentage calculations, which breaks JSON serialization since JSON doesn't support `NaN` values.
+
+**Solution Applied**: Added data cleaning function in `ros_bridge_node.py`:
+```python
+def clean_data_for_json(self, data):
+    """Clean data to ensure JSON serialization compatibility"""
+    import math
+    if isinstance(data, float):
+        if math.isnan(data) or math.isinf(data):
+            return None  # Convert NaN/Inf to None (null in JSON)
+    return data
+```
+
+**Prevention**: Always validate sensor data for `NaN`/`Inf` values before JSON serialization. Use `math.isnan()` and `math.isinf()` checks in Python.
+
+**Status**: ✅ RESOLVED - Lidar data now flows correctly to web interface
+
 ## ✅ CONFIRMED WORKING SOLUTION
 
 ### Hardware Configuration

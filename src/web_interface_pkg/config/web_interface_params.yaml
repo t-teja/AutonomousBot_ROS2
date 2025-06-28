@@ -1,0 +1,56 @@
+# Web Interface Configuration Parameters
+# Configuration for JetRacer web interface nodes
+
+web_server:
+  ros__parameters:
+    # Server settings
+    port: 8080
+    host: "0.0.0.0"  # Bind to all interfaces
+    
+    # Security settings
+    enable_cors: true
+    max_request_size: 10485760  # 10MB
+    
+    # Performance settings
+    worker_processes: 1
+    keep_alive_timeout: 30
+    request_timeout: 30
+    
+    # Static file settings
+    static_file_cache: true
+    cache_max_age: 3600  # 1 hour
+
+ros_bridge:
+  ros__parameters:
+    # WebSocket settings
+    websocket_port: 8765
+    websocket_host: "0.0.0.0"
+    max_connections: 10
+    
+    # Data publishing settings
+    publish_rate: 10.0  # Hz - Rate to broadcast data to web clients
+    
+    # Robot control settings
+    max_linear_velocity: 1.0   # m/s
+    max_angular_velocity: 2.0  # rad/s
+    
+    # Safety settings
+    command_timeout: 1.0  # seconds - Stop robot if no command received
+    emergency_stop_enabled: true
+    
+    # Data filtering
+    lidar_downsample_factor: 10  # Send every Nth lidar point
+    battery_update_rate: 1.0     # Hz
+    system_update_rate: 0.2      # Hz
+    
+    # Topic mappings
+    cmd_vel_topic: "/cmd_vel"
+    odom_topic: "/odom"
+    scan_topic: "/scan"
+    battery_topic: "/battery_state"
+    robot_status_topic: "/robot_status"
+    oled_message_topic: "/oled_display_message"
+    
+    # QoS settings
+    reliable_qos_depth: 10
+    sensor_qos_depth: 10

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>JetRacer Robot Control</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">🤖 JetRacer</h1>
+            <div class="connection-status" id="connectionStatus">
+                <span class="status-dot offline"></span>
+                <span class="status-text">Connecting...</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard">
+        <!-- Robot Status Panel -->
+        <section class="panel status-panel">
+            <h2 class="panel-title">🔋 Robot Status</h2>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-label">Battery</div>
+                    <div class="status-value" id="batteryLevel">---%</div>
+                    <div class="battery-bar">
+                        <div class="battery-fill" id="batteryFill"></div>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Voltage</div>
+                    <div class="status-value" id="batteryVoltage">---V</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Current</div>
+                    <div class="status-value" id="batteryCurrent">---A</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Power</div>
+                    <div class="status-value" id="batteryPower">---W</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Robot IP</div>
+                    <div class="status-value" id="robotIP">---.---.---.---</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">System Status</div>
+                    <div class="status-value" id="systemStatus">Unknown</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Control Panel -->
+        <section class="panel control-panel">
+            <h2 class="panel-title">🎮 Robot Control</h2>
+            
+            <!-- Movement Controls -->
+            <div class="control-section">
+                <h3>Movement</h3>
+                <div class="joystick-container">
+                    <div class="joystick" id="joystick">
+                        <div class="joystick-knob" id="joystickKnob"></div>
+                    </div>
+                    <div class="joystick-info">
+                        <div>X: <span id="joystickX">0.0</span></div>
+                        <div>Y: <span id="joystickY">0.0</span></div>
+                    </div>
+                </div>
+                
+                <!-- Quick Control Buttons -->
+                <div class="quick-controls">
+                    <button class="control-btn" id="stopBtn">🛑 STOP</button>
+                    <button class="control-btn" id="forwardBtn">⬆️ Forward</button>
+                    <button class="control-btn" id="backwardBtn">⬇️ Backward</button>
+                    <button class="control-btn" id="leftBtn">⬅️ Left</button>
+                    <button class="control-btn" id="rightBtn">➡️ Right</button>
+                </div>
+            </div>
+
+            <!-- Lidar Controls -->
+            <div class="control-section">
+                <h3>Lidar Control</h3>
+                <div class="lidar-controls">
+                    <button class="control-btn lidar-btn" id="startLidarBtn">▶️ Start Lidar</button>
+                    <button class="control-btn lidar-btn" id="stopLidarBtn">⏹️ Stop Lidar</button>
+                    <div class="lidar-status">
+                        Status: <span id="lidarStatus">Unknown</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OLED Display Control -->
+            <div class="control-section">
+                <h3>Display Message</h3>
+                <div class="oled-controls">
+                    <input type="text" id="oledMessage" placeholder="Enter message for OLED display" maxlength="20">
+                    <button class="control-btn" id="sendOledBtn">📤 Send</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lidar Visualization -->
+        <section class="panel lidar-panel">
+            <h2 class="panel-title">📡 Lidar Scan</h2>
+            <div class="lidar-container">
+                <canvas id="lidarCanvas" width="500" height="500"></canvas>
+            </div>
+        </section>
+
+        <!-- Lidar Data Log -->
+        <section class="panel lidar-log-panel">
+            <h2 class="panel-title">📊 Lidar Data Log</h2>
+            <div class="lidar-log-container">
+                <div id="lidarDataLog" style="height: 200px; overflow-y: auto; background-color: #1a1a1a; color: #00ff00; font-family: 'Courier New', monospace; font-size: 11px; padding: 10px; border-radius: 5px; border: 1px solid #333;">
+                    <div style="color: #888;">Waiting for lidar data...</div>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button id="clearLogBtn" class="btn btn-sm" style="background-color: #666; color: white; border: none; padding: 5px 10px; margin-right: 5px; border-radius: 3px;">Clear Log</button>
+                    <button id="pauseLogBtn" class="btn btn-sm" style="background-color: #ff9800; color: white; border: none; padding: 5px 10px; margin-right: 5px; border-radius: 3px;">Pause</button>
+                    <span style="background-color: #2196f3; color: white; padding: 3px 8px; border-radius: 3px; font-size: 10px;">Auto-scroll: ON</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Camera Feed -->
+        <section class="panel camera-panel">
+            <h2 class="panel-title">📷 Camera Feed</h2>
+            <div class="camera-container">
+                <div class="camera-placeholder">
+                    <div class="camera-icon">📹</div>
+                    <div class="camera-text">Camera feed will be available when camera node is running</div>
+                </div>
+                <!-- Future: <img id="cameraFeed" src="" alt="Camera Feed"> -->
+            </div>
+        </section>
+
+        <!-- System Information -->
+        <section class="panel system-panel">
+            <h2 class="panel-title">💻 System Info</h2>
+            <div class="system-grid">
+                <div class="system-item">
+                    <div class="system-label">CPU Usage</div>
+                    <div class="system-value" id="cpuUsage">---%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="cpuProgress"></div>
+                    </div>
+                </div>
+                <div class="system-item">
+                    <div class="system-label">Memory</div>
+                    <div class="system-value" id="memoryUsage">---%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="memoryProgress"></div>
+                    </div>
+                </div>
+                <div class="system-item">
+                    <div class="system-label">Temperature</div>
+                    <div class="system-value" id="systemTemp">---°C</div>
+                </div>
+                <div class="system-item">
+                    <div class="system-label">Uptime</div>
+                    <div class="system-value" id="systemUptime">---</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 JetRacer Autonomous Robot | Built with ROS2 Humble</p>
+            <div class="footer-links">
+                <a href="/api/robot_info" target="_blank">Robot Info</a>
+                <a href="/api/system_status" target="_blank">System API</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Connecting to Robot...</div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js?v=8"></script>
+</body>
+</html>

@@ -1,0 +1,584 @@
+/* Modern JetRacer Robot Interface Styles */
+
+/* CSS Variables for theming */
+:root {
+    --primary-color: #1a1a2e;
+    --secondary-color: #16213e;
+    --accent-color: #0f3460;
+    --highlight-color: #e94560;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --text-primary: #ffffff;
+    --text-secondary: #bdc3c7;
+    --background-dark: #0d1117;
+    --background-light: #161b22;
+    --border-color: #30363d;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+    --border-radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, var(--background-dark) 0%, var(--primary-color) 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Header */
+.header {
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1rem 0;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--background-light);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.status-dot.online {
+    background: var(--success-color);
+}
+
+.status-dot.offline {
+    background: var(--danger-color);
+}
+
+.status-dot.connecting {
+    background: var(--warning-color);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Dashboard Layout */
+.dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Panel Styles */
+.panel {
+    background: rgba(22, 33, 62, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition);
+}
+
+.panel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.panel-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+/* Status Panel */
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.status-item {
+    text-align: center;
+    padding: 1rem;
+    background: var(--background-light);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.status-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.status-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.battery-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--background-dark);
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.battery-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--danger-color) 0%, var(--warning-color) 50%, var(--success-color) 100%);
+    border-radius: 4px;
+    transition: var(--transition);
+    width: 0%;
+}
+
+/* Control Panel */
+.control-section {
+    margin-bottom: 2rem;
+}
+
+.control-section h3 {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Joystick */
+.joystick-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.joystick {
+    width: 150px;
+    height: 150px;
+    border: 3px solid var(--accent-color);
+    border-radius: 50%;
+    position: relative;
+    background: radial-gradient(circle, var(--background-light) 0%, var(--background-dark) 100%);
+    cursor: pointer;
+    user-select: none;
+    touch-action: none;
+}
+
+.joystick-knob {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--highlight-color) 0%, var(--accent-color) 100%);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: var(--transition);
+}
+
+.joystick-info {
+    display: flex;
+    gap: 1rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* Control Buttons */
+.quick-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.control-btn {
+    padding: 0.75rem 1rem;
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--secondary-color) 100%);
+    color: var(--text-primary);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+}
+
+.control-btn:hover {
+    background: linear-gradient(135deg, var(--highlight-color) 0%, var(--accent-color) 100%);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn#stopBtn {
+    background: linear-gradient(135deg, var(--danger-color) 0%, #c0392b 100%);
+    grid-column: 1 / -1;
+}
+
+/* Lidar Controls */
+.lidar-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.lidar-btn {
+    width: 100%;
+}
+
+.lidar-status {
+    text-align: center;
+    padding: 0.5rem;
+    background: var(--background-light);
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+}
+
+/* OLED Controls */
+.oled-controls {
+    display: flex;
+    gap: 0.75rem;
+}
+
+#oledMessage {
+    flex: 1;
+    padding: 0.75rem;
+    background: var(--background-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+}
+
+#oledMessage::placeholder {
+    color: var(--text-secondary);
+}
+
+/* Lidar Visualization */
+.lidar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#lidarCanvas {
+    border: 2px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    background: var(--background-dark);
+    max-width: 100%;
+    height: auto;
+}
+
+
+
+/* Lidar Log Panel */
+.lidar-log-container {
+    width: 100%;
+}
+
+#lidarDataLog {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--background-dark);
+}
+
+#lidarDataLog::-webkit-scrollbar {
+    width: 8px;
+}
+
+#lidarDataLog::-webkit-scrollbar-track {
+    background: var(--background-dark);
+    border-radius: 4px;
+}
+
+#lidarDataLog::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 4px;
+}
+
+#lidarDataLog::-webkit-scrollbar-thumb:hover {
+    background: #00d4aa;
+}
+
+/* Camera Panel */
+.camera-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.camera-placeholder {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 2rem;
+}
+
+.camera-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+/* System Panel */
+.system-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.system-item {
+    padding: 1rem;
+    background: var(--background-light);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.system-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.system-value {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--background-dark);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success-color) 0%, var(--warning-color) 70%, var(--danger-color) 100%);
+    border-radius: 3px;
+    transition: var(--transition);
+    width: 0%;
+}
+
+/* Footer */
+.footer {
+    background: var(--primary-color);
+    border-top: 1px solid var(--border-color);
+    padding: 2rem 0;
+    margin-top: 2rem;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.footer-links {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-links a:hover {
+    color: var(--text-primary);
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(13, 17, 23, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--border-color);
+    border-top: 3px solid var(--highlight-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .panel {
+        padding: 1rem;
+    }
+    
+    .header-content {
+        padding: 0 1rem;
+    }
+    
+    .logo {
+        font-size: 1.25rem;
+    }
+    
+    .joystick {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .joystick-knob {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .quick-controls {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .oled-controls {
+        flex-direction: column;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .status-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .system-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .joystick-info {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+    .control-btn {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+    
+    .joystick {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .joystick-knob {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    /* Already dark by default */
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    :root {
+        --border-color: #ffffff;
+        --text-secondary: #ffffff;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

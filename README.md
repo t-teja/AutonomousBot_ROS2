@@ -89,20 +89,40 @@ ros2 launch battery_monitor_pkg battery_monitor.launch.py
 ros2 launch rplidar_ros view_rplidar_a1_launch.py serial_port:=/dev/ttyACM1
 ```
 
-6. **Test Commands**:
+6. **Launch Complete System** (All Nodes + Web Interface):
 ```bash
-# Test robot movement
+ros2 launch jetracer_full_system.launch.py
+# Access web interface at: http://<robot-ip>:8080
+```
+
+7. **Individual Node Testing**:
+```bash
+# Launch individual components
+ros2 launch motor_control_pkg motor_control.launch.py
+ros2 launch oled_display_pkg oled_display.launch.py
+ros2 launch battery_monitor_pkg battery_monitor.launch.py
+ros2 launch rplidar_ros view_rplidar_a1_launch.py serial_port:=/dev/ttyACM1
+ros2 launch web_interface_pkg web_interface.launch.py
+
+# Test commands
 ros2 topic pub /cmd_vel geometry_msgs/Twist '{linear: {x: 0.3}, angular: {z: 0.5}}'
-
-# Test OLED display
 ros2 topic pub /oled_display_message std_msgs/String '{data: "Hello Robot!"}'
-
-# Monitor battery
 ros2 topic echo /battery/percentage
-
-# Monitor lidar
 ros2 topic hz /scan
 ```
+
+## Web Interface Features
+
+**Modern Robot Control Interface** - Optimized for mobile and tablet:
+- 🎮 **Touch-friendly joystick** for robot movement control
+- 🔋 **Real-time battery monitoring** with visual indicators
+- 📡 **Lidar scan visualization** with interactive canvas
+- 💻 **System status dashboard** (CPU, memory, temperature)
+- 🚀 **Start/stop lidar controls** with status feedback
+- 📱 **Progressive Web App (PWA)** - install on home screen
+- 🌐 **Responsive design** - works on phone, tablet, desktop
+
+**Access**: `http://<robot-ip>:8080` from any device on the same network
 
 ## RViz Configuration Notes
 
